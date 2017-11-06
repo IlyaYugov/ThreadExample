@@ -16,17 +16,29 @@ namespace TheadExample
             _cancelled = true;
         }
 
-        public void Work()
+        public void Work(object param)
         {
+            SynchronizationContext context = (SynchronizationContext)param;
+
             for (int i = 0; i < 1000; i++)
             {
                 if (_cancelled)
                     break;
 
                 Thread.Sleep(3);
-                ProcessChanged(i);
+                context.Send(OnProcessChanged, i);
             }
-            WorkCompleted(_cancelled);
+            context.Send(OnWorkCompleted, _cancelled);
+        }
+
+        public void OnProcessChanged(object i)
+        {
+            ProcessChanged?.Invoke((int)i);
+        }
+
+        public void OnWorkCompleted(object cancelled)
+        {
+            WorkCompleted?.Invoke((bool)cancelled);
         }
 
         public event Action<int> ProcessChanged;

@@ -20,6 +20,8 @@ namespace TheadExample
                                 
             var context = SynchronizationContext.Current;
 
+            var form = new Form1();
+
             context = SynchronizationContext.Current;
 
             Application.Run(form);

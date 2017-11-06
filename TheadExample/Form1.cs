@@ -14,6 +14,8 @@ namespace TheadExample
     public partial class Form1 : Form
     {
         private Worker _worker;
+        private SynchronizationContext _context;
+
         public Form1()
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace TheadExample
 
             //_worker.Work();
             Thread thread = new Thread(_worker.Work);
-            thread.Start();
+            thread.Start(_context);
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
@@ -40,29 +42,21 @@ namespace TheadExample
 
         private void WorkCompoleted(bool cancelled)
         {
-            Action action = () =>
-            {
-                string message = cancelled
-                        ? "Процесс отменён"
-                        : "Процесс завершен!";
-                MessageBox.Show(message);
-                buttonStart.Enabled = true;
-            };
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
+            string message = cancelled
+                    ? "Процесс отменён"
+                    : "Процесс завершен!";
+            MessageBox.Show(message);
+            buttonStart.Enabled = true;
         }
         private void Worker_PreocessChanged(int progress)
         {
-            Action action = () =>
-            {
-                progressBar.Value = progress;
-            };
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
+            progressBar.Value = progress + 1;// Fix progress freeze
+            progressBar.Value = progress;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _context = SynchronizationContext.Current;
         }
     }
 }
