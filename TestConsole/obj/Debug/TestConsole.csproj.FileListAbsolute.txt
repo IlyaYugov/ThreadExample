@@ -1,0 +1,5 @@
+C:\Applications\TheadExample\TestConsole\bin\Debug\TestConsole.exe.config
+C:\Applications\TheadExample\TestConsole\bin\Debug\TestConsole.exe
+C:\Applications\TheadExample\TestConsole\bin\Debug\TestConsole.pdb
+C:\Applications\TheadExample\TestConsole\obj\Debug\TestConsole.exe
+C:\Applications\TheadExample\TestConsole\obj\Debug\TestConsole.pdb

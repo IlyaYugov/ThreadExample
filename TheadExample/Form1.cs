@@ -14,26 +14,23 @@ namespace TheadExample
     public partial class Form1 : Form
     {
         private Worker _worker;
+        private TaskScheduler _sheduler;
         public Form1()
         {
             InitializeComponent();
         }
 
-        private async void buttonStart_Click(object sender, EventArgs e)
+        private void buttonStart_Click(object sender, EventArgs e)
         {
             _worker = new Worker();
             _worker.ProcessChanged += Worker_PreocessChanged;
-            _worker.WorkCompleted += WorkCompoleted;
 
             buttonStart.Enabled = false;
 
-            bool cancelled = await Task.Factory.StartNew(_worker.Work);
+            var task =  Task.Factory.StartNew(_worker.Work);
+            task.ContinueWith((t, o) => WorkCompoleted(t.Result), null, _sheduler);
 
-            string message = cancelled
-                ? "Процесс отменён"
-                : "Процесс завершен!";
-            MessageBox.Show(message);
-            buttonStart.Enabled = true;
+
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
@@ -44,6 +41,11 @@ namespace TheadExample
 
         private void WorkCompoleted(bool cancelled)
         {
+            string message = cancelled
+                ? "Процесс отменён"
+                : "Процесс завершен!";
+            MessageBox.Show(message);
+            buttonStart.Enabled = true;
         }
         private void Worker_PreocessChanged(int progress)
         {
@@ -59,6 +61,8 @@ namespace TheadExample
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            _sheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
             Action action = () =>
             {
                 while (true)

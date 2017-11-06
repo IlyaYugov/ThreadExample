@@ -26,13 +26,11 @@ namespace TheadExample
                 Thread.Sleep(3);
                 ProcessChanged(i);
             }
-            WorkCompleted(_cancelled);
 
             return _cancelled;
         }
 
         public event Action<int> ProcessChanged;
-        public event Action<bool> WorkCompleted;
 
     }
 }
