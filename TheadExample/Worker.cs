@@ -16,7 +16,7 @@ namespace TheadExample
             _cancelled = true;
         }
 
-        public void Work()
+        public bool Work()
         {
             for (int i = 0; i < 1000; i++)
             {
@@ -27,6 +27,8 @@ namespace TheadExample
                 ProcessChanged(i);
             }
             WorkCompleted(_cancelled);
+
+            return _cancelled;
         }
 
         public event Action<int> ProcessChanged;

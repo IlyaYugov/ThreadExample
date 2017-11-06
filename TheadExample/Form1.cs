@@ -19,7 +19,7 @@ namespace TheadExample
             InitializeComponent();
         }
 
-        private void buttonStart_Click(object sender, EventArgs e)
+        private async void buttonStart_Click(object sender, EventArgs e)
         {
             _worker = new Worker();
             _worker.ProcessChanged += Worker_PreocessChanged;
@@ -27,9 +27,13 @@ namespace TheadExample
 
             buttonStart.Enabled = false;
 
-            //_worker.Work();
-            Thread thread = new Thread(_worker.Work);
-            thread.Start();
+            bool cancelled = await Task.Factory.StartNew(_worker.Work);
+
+            string message = cancelled
+                ? "Процесс отменён"
+                : "Процесс завершен!";
+            MessageBox.Show(message);
+            buttonStart.Enabled = true;
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
@@ -40,18 +44,6 @@ namespace TheadExample
 
         private void WorkCompoleted(bool cancelled)
         {
-            Action action = () =>
-            {
-                string message = cancelled
-                        ? "Процесс отменён"
-                        : "Процесс завершен!";
-                MessageBox.Show(message);
-                buttonStart.Enabled = true;
-            };
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
         }
         private void Worker_PreocessChanged(int progress)
         {
