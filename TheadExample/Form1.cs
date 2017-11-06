@@ -14,8 +14,6 @@ namespace TheadExample
     public partial class Form1 : Form
     {
         private Worker _worker;
-        private SynchronizationContext _context;
-
         public Form1()
         {
             InitializeComponent();
@@ -31,7 +29,7 @@ namespace TheadExample
 
             //_worker.Work();
             Thread thread = new Thread(_worker.Work);
-            thread.Start(_context);
+            thread.Start();
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
@@ -65,11 +63,6 @@ namespace TheadExample
                 Invoke(action);
             else
                 action();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            _context = SynchronizationContext.Current;
         }
     }
 }
