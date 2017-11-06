@@ -31,6 +31,7 @@
             this.buttonStart = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.lblTime = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonStart
@@ -62,17 +63,30 @@
             this.progressBar.Step = 1000;
             this.progressBar.TabIndex = 2;
             // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTime.Location = new System.Drawing.Point(12, 9);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(37, 15);
+            this.lblTime.TabIndex = 3;
+            this.lblTime.Text = "label1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(687, 317);
+            this.Controls.Add(this.lblTime);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.buttonStart);
             this.Name = "Form1";
             this.Text = "ThreadTesting";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -81,6 +95,7 @@
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label lblTime;
     }
 }
 

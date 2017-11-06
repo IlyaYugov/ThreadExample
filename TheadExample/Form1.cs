@@ -64,5 +64,20 @@ namespace TheadExample
             else
                 action();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Action action = () =>
+            {
+                while (true)
+                {
+                    Invoke((Action)(() => lblTime.Text = DateTime.Now.ToLongTimeString()));
+                    Thread.Sleep(1000);
+                }
+            };
+            //var task = new Task(action);
+            //task.Start();
+            Task.Factory.StartNew(action);
+        }
     }
 }
