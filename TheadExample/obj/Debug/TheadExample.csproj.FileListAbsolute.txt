@@ -1,7 +1,6 @@
 C:\Applications\TheadExample\TheadExample\bin\Debug\TheadExample.exe.config
 C:\Applications\TheadExample\TheadExample\bin\Debug\TheadExample.exe
 C:\Applications\TheadExample\TheadExample\bin\Debug\TheadExample.pdb
-C:\Applications\TheadExample\TheadExample\obj\Debug\TheadExample.csprojResolveAssemblyReference.cache
 C:\Applications\TheadExample\TheadExample\obj\Debug\TheadExample.Form1.resources
 C:\Applications\TheadExample\TheadExample\obj\Debug\TheadExample.Properties.Resources.resources
 C:\Applications\TheadExample\TheadExample\obj\Debug\TheadExample.csproj.GenerateResource.Cache

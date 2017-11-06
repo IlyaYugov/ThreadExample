@@ -1,68 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TheadExample
 {
     public partial class Form1 : Form
     {
-        private Worker _worker;
         public Form1()
         {
             InitializeComponent();
+
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            _worker = new Worker();
-            _worker.ProcessChanged += Worker_PreocessChanged;
-            _worker.WorkCompleted += WorkCompoleted;
-
             buttonStart.Enabled = false;
-
-            //_worker.Work();
-            Thread thread = new Thread(_worker.Work);
-            thread.Start();
+            worker.RunWorkerAsync();
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-            _worker.Cancel();
+            worker.CancelAsync();
             buttonStart.Enabled = true;
         }
 
-        private void WorkCompoleted(bool cancelled)
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Action action = () =>
-            {
-                string message = cancelled
-                        ? "Процесс отменён"
-                        : "Процесс завершен!";
-                MessageBox.Show(message);
-                buttonStart.Enabled = true;
-            };
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
+            progressBar.Value = e.ProgressPercentage + 1;
+            progressBar.Value = e.ProgressPercentage;
         }
-        private void Worker_PreocessChanged(int progress)
+
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Action action = () =>
+            string message = e.Error != null 
+                ? $"Error: {e.Error.Message}"
+                : e.Cancelled
+                    ? "Процесс отменён"
+                    : "Процесс завершен!";
+            MessageBox.Show(message);
+            buttonStart.Enabled = true;
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 1000; i++)
             {
-                progressBar.Value = progress;
-            };
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+
+                if(i == 30)
+                {
+                    throw new Exception("Ooooops");
+                }
+
+                worker.ReportProgress(i);
+                Thread.Sleep(15);
+            }
         }
     }
 }
